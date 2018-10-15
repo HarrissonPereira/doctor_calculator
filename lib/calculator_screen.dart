@@ -401,6 +401,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           {
                             _resultadoCalculo = _resultadoFinal;
                             _operador = "-";
+                            _historico =  _historico +_operador;
                             _isNum1 = false;
                           }
 
@@ -553,6 +554,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           {
                             _resultadoCalculo = _resultadoFinal;
                             _operador = "x";
+                            _historico =  _historico +_operador;
                             _isNum1 = false;
                           }
 
@@ -640,8 +642,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       color: Colors.blueGrey,
                     onPressed: (){
                       setState(() {
-                        if(_resultadoFinal == 0.0 && _operador.length ==0)
-                          _historico = "";
+                        if (_resultadoFinal == 0.0 || _operador.length == 0) {
+                          resetar();
+                          if (_isNovoCalculo) {
+                            _historico = "";
+                            _isNovoCalculo = !_isNovoCalculo;
+                          }
+                        }
 
                         _entradaNumeros = _entradaNumeros + "0";
                       });
@@ -705,6 +712,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           {
                             _resultadoCalculo = _resultadoFinal;
                             _operador = "÷";
+                            _historico =  _historico +_operador;
                             _isNum1 = false;
                           }
 
@@ -748,8 +756,57 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   )
                 ],
               ),
+
+              new Row
+                (
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
+                  children: <Widget>
+              [
+              new MaterialButton(
+              child: new Text(
+                  "C",
+                  style: new TextStyle(
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  )),
+      color: Colors.blueAccent,
+      onPressed: (){
+        setState(() {
+
+          _entradaNumeros = "";
+
+        });
+      },
+    ),
+
+              new MaterialButton(
+                child: new Text(
+                    "CE",
+                    style: new TextStyle(
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+                color: Colors.blueAccent,
+                onPressed: (){
+                  setState(() {
+
+                    resetar();
+                    _resultadoFinal = 0.0;
+                    _entradaNumeros = "";
+                    _historico = "";
+
+                  });
+                },
+              ),
+  ]
+              ),
+
             ],
           ),
+
+
         )
     );
   }
